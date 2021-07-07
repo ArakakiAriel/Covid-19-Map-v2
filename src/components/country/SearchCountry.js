@@ -13,7 +13,7 @@ export const SearchCountry = ({setCountry}) => {
 
     }
     return (
-        <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch} autoComplete="off">
             <input type="text"
             placeholder="Country Name"
             className="form-control"

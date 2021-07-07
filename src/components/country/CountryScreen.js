@@ -3,6 +3,9 @@ import { axiosCall } from '../../helpers/axiosCalls';
 import { StatisticsTable } from '../StatisticsTable';
 import { SearchCountry } from './SearchCountry';
 import { CommonLoading } from 'react-loadingg';
+import { commaSeparator } from '../../helpers/commaSeparator';
+import { CountryTable } from './CountryTable';
+import { Example } from './Example';
 
 export const CountryScreen = () => {
 
@@ -10,7 +13,9 @@ export const CountryScreen = () => {
     const [data, setData] = useState({loading: false, error:false, response:null});
     let error = false;
     
-    const url = `https://covid-api-info.herokuapp.com/api/covid/cases/country/${country}`
+    const urlCountry = `https://covid-api-info.herokuapp.com/api/covid/cases/country/${country}`;
+    const urlCountryGrowth = `https://covid-api-info.herokuapp.com/api/covid/cases/country/${country}/growth`;
+
 
     
     useEffect(() => {
@@ -25,24 +30,41 @@ export const CountryScreen = () => {
     const call = async () => {
         console.log("Entro al call")
         setData({...data, loading: true})
-        const response = await axiosCall(url);
-        if(response.error){
+        const response = await axiosCall(urlCountry);
+        const growthResponse = await axiosCall(urlCountryGrowth);
+        if(response.error || growthResponse.error ){
             error = true;
             setData({...data, loading: false, response:null});
         }else{
             console.log(response.response_data)
-            await setData({...data, response: response.response_data});
-            console.log("DATA")
-            console.log(data)
+            let tableData = await formatTableData(response.response_data, growthResponse.response_data);
+            await setData({...data, response: tableData});
+            
         }
-        console.log(data);
+        console.log(data.response);
     }
     return (
         <>
             <h1>Country Screen</h1>
             <hr/>
-            
-            <div className="container">
+
+
+            <div>
+                <div>
+                    <SearchCountry setCountry={setCountry}/>
+                </div>
+                <div>
+                        {data.response?(<h1>{data.response[0].country}</h1>):<div></div>}
+                </div>
+                <div>
+                    {
+                        (!data.loading?<CountryTable countryData={data.response}/>:<CommonLoading />)
+                    }
+                </div>
+            </div>
+
+
+            {/* <div className="container">
                 <div className="row">
                     <div className="col-12">
                         <SearchCountry setCountry={setCountry}/>
@@ -68,17 +90,33 @@ export const CountryScreen = () => {
                             (data.response) && data.response.map((day, index) => 
 
                             <div className="row border" classkey={`row-${index}`} >
-                                <div className="col border" classkey={`col-confirmed-${index}`}>{day.total.confirmed}</div>
-                                <div className="col border" classkey={`col-actives-${index}`}>{day.total.actives}</div>
-                                <div className="col border" classkey={`col-deaths-${index}`}>{day.total.deaths}</div>
-                                <div className="col border" classkey={`col-recovered-${index}`}>{day.total.recovered}</div>
+                                <div className="col border" classkey={`col-date-${index}`}>{day.updated_date}</div>
+                                <div className="col border" classkey={`col-confirmed-${index}`}>{commaSeparator(day.total.confirmed)}</div>
+                                <div className="col border" classkey={`col-actives-${index}`}>{commaSeparator(day.total.actives)}</div>
+                                <div className="col border" classkey={`col-deaths-${index}`}>{commaSeparator(day.total.deaths)}</div>
+                                <div className="col border" classkey={`col-recovered-${index}`}>{commaSeparator(day.total.recovered)}</div>
+                                <div className="col border" classkey={`col-recovered-${index}`}>{commaSeparator(day.total.recovered)}</div>
+                                <div className="col border" classkey={`col-recovered-${index}`}>{commaSeparator(day.total.recovered)}</div>
+                                <div className="col border" classkey={`col-recovered-${index}`}>{commaSeparator(day.total.recovered)}</div>
                             </div>)
                     }
                     </div>
                    
                 </div>
-            </div>
+            </div> */}
             
         </>
     )
+}
+
+const formatTableData = async (arrayA, arrayB) => {
+    let formatedData = [];
+    await arrayA.map((dataA, index) => 
+        formatedData[index] = {
+            ...dataA,
+            ...arrayB[index]
+        }
+    );
+
+    return formatedData;
 }
