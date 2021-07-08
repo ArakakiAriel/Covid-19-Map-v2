@@ -60,7 +60,7 @@ export const CountryTable = ({countryData}) => {
           <Table className={classes.table} size="small"  aria-label="a dense table">
               <TableHead>
               <TableRow>
-                <StyledTableCell width="700px">{countryData[0].country}</StyledTableCell>
+                <StyledTableCell width="700px" className="mb-0">{countryData[0].country}</StyledTableCell>
               </TableRow>
               <TableRow>
                   <StyledTableCell>Updated Date</StyledTableCell>

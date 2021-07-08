@@ -53,10 +53,7 @@ export const CountryScreen = () => {
                 <div>
                     <SearchCountry setCountry={setCountry}/>
                 </div>
-                <div>
-                        {data.response?(<h1>{data.response[0].country}</h1>):<div></div>}
-                </div>
-                <div>
+                <div className="mt-3">
                     {
                         (!data.loading?<CountryTable countryData={data.response}/>:<CommonLoading />)
                     }
