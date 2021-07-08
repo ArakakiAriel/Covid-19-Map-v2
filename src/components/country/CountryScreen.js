@@ -6,6 +6,7 @@ import { CommonLoading } from 'react-loadingg';
 import { commaSeparator } from '../../helpers/commaSeparator';
 import { CountryTable } from './CountryTable';
 import { Example } from './Example';
+import { Charts } from './Charts';
 
 export const CountryScreen = () => {
 
@@ -45,13 +46,24 @@ export const CountryScreen = () => {
     }
     return (
         <>
-            <h1>Country Screen</h1>
+            {data.response && <h1>{data.response[0].country}</h1>}
             <hr/>
 
 
             <div>
                 <div>
                     <SearchCountry setCountry={setCountry}/>
+                </div>
+                <div className="mt-3 container">
+                    <div className="row">
+                        <Charts countryData={data.response}  line_key={"new_confirmed_cases"} x_axis_key={"updated_date"} />
+                    </div>
+                    <div className="row">
+                        <Charts countryData={data.response}  line_key={"new_death_cases"} x_axis_key={"updated_date"} stroke_color={"#DA2D00"}/>
+                    </div>
+                    <div className="row">
+                        <Charts countryData={data.response}  line_key={"new_recovered_cases"} x_axis_key={"updated_date"} stroke_color={"#A4C406"}/>
+                    </div>
                 </div>
                 <div className="mt-3">
                     {

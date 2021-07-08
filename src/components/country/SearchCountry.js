@@ -14,6 +14,7 @@ export const SearchCountry = ({setCountry}) => {
         setCountry(country);
 
         console.log(country)
+        reset();
 
     }
     return (
