@@ -7,13 +7,12 @@ import { commaSeparator } from '../../helpers/commaSeparator';
 import { CountryTable } from './CountryTable';
 import { Example } from './Example';
 import { Charts } from './Charts';
-
+import { Cards } from './Cards';
 export const CountryScreen = () => {
 
     const [country, setCountry] = useState("")
     const [data, setData] = useState({loading: false, error:false, response:null});
-    let error = false;
-    
+
     const urlCountry = `https://covid-api-info.herokuapp.com/api/covid/cases/country/${country}`;
     const urlCountryGrowth = `https://covid-api-info.herokuapp.com/api/covid/cases/country/${country}/growth`;
 
@@ -30,16 +29,15 @@ export const CountryScreen = () => {
 
     const call = async () => {
         console.log("Entro al call")
-        setData({...data, loading: true})
+        setData({...data, loading: true, error:false});
         const response = await axiosCall(urlCountry);
         const growthResponse = await axiosCall(urlCountryGrowth);
         if(response.error || growthResponse.error ){
-            error = true;
-            setData({...data, loading: false, response:null});
+            setData({error:true , loading: false, response:null});
         }else{
             console.log(response.response_data)
             let tableData = await formatTableData(response.response_data, growthResponse.response_data);
-            await setData({...data, response: tableData});
+            await setData({...data, response: tableData, error:false});
             
         }
         console.log(data.response);
@@ -53,9 +51,20 @@ export const CountryScreen = () => {
             <div>
                 <div>
                     <SearchCountry setCountry={setCountry}/>
+                    {data.error &&  <div className="ml-3 error-pop" >
+                        The country name was not correct.
+                    </div>}
                 </div>
-                {
+                
+                {//
                     data.response && 
+                    <>
+                    <div className="card-container">
+                            <Cards title="Total Confirmed" content={`${commaSeparator(data.response[0].total.confirmed)}`} secondaryContent={` (+${commaSeparator(data.response[0].new_confirmed_cases)})`} />
+                            <Cards title="Total Actives" content={`${commaSeparator(data.response[0].total.actives)}`} style="warning"/>
+                            <Cards title="Total Deaths" content={`${commaSeparator(data.response[0].total.deaths)}`} secondaryContent={` (+${commaSeparator(data.response[0].new_death_cases)})`} style="danger"/>
+                            <Cards title="Total Recovered" content={`${commaSeparator(data.response[0].total.recovered)}`} secondaryContent={` (+${commaSeparator(data.response[0].new_recovered_cases)})`} style="success"/>
+                    </div>
                     <div className="mt-3 container">
                         <div className="row">
                             <div style={{ width: "100%", textAlign: "center" }}>New Confirmed Cases</div>
@@ -70,6 +79,7 @@ export const CountryScreen = () => {
                             <Charts countryData={data.response}  line_key={"new_recovered_cases"} x_axis_key={"updated_date"} stroke_color={"#A4C406"}/>
                         </div>
                     </div>
+                    </>
                 }
                 
                 <div className="mt-3">

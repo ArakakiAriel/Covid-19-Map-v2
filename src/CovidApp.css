@@ -1,3 +1,56 @@
 *{
   margin: 0;
 }
+
+.card-container{
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  margin: auto;
+  margin-top: 2rem;
+}
+.flexbox{
+  display: flex;
+  justify-content: center;
+}
+
+.error-pop{
+  padding-left: 10px;
+  color: rgb(255, 0, 0);
+  border-style: solid;
+  border-color: rgb(220, 12, 12);
+  border-width: thin;
+  border-radius: 5px;
+  max-width: 25%;
+  min-width: 275px;
+  height: 40px;
+  line-height: 40px;
+  box-shadow: 2px 2px 5px rgba(255, 94, 0, 0.149);
+  animation-name: appearFromTop;
+  animation-duration: 0.25s; 
+
+}
+
+.text1{
+  
+  height: 25px;
+  line-height: 25px;
+}
+.cases-card{
+  max-width: 250px;
+  min-width: 250px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@keyframes appearFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
