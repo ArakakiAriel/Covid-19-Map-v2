@@ -54,17 +54,24 @@ export const CountryScreen = () => {
                 <div>
                     <SearchCountry setCountry={setCountry}/>
                 </div>
-                <div className="mt-3 container">
-                    <div className="row">
-                        <Charts countryData={data.response}  line_key={"new_confirmed_cases"} x_axis_key={"updated_date"} />
+                {
+                    data.response && 
+                    <div className="mt-3 container">
+                        <div className="row">
+                            <div style={{ width: "100%", textAlign: "center" }}>New Confirmed Cases</div>
+                            <Charts countryData={data.response}  line_key={"new_confirmed_cases"} x_axis_key={"updated_date"} />
+                        </div>
+                        <div className="row">
+                            <div style={{ width: "100%", textAlign: "center" }}>New Death Cases</div>
+                            <Charts countryData={data.response}  line_key={"new_death_cases"} x_axis_key={"updated_date"} stroke_color={"#DA2D00"}/>
+                        </div>
+                        <div className="row">
+                            <div style={{ width: "100%", textAlign: "center" }}>New Recovered Cases</div>
+                            <Charts countryData={data.response}  line_key={"new_recovered_cases"} x_axis_key={"updated_date"} stroke_color={"#A4C406"}/>
+                        </div>
                     </div>
-                    <div className="row">
-                        <Charts countryData={data.response}  line_key={"new_death_cases"} x_axis_key={"updated_date"} stroke_color={"#DA2D00"}/>
-                    </div>
-                    <div className="row">
-                        <Charts countryData={data.response}  line_key={"new_recovered_cases"} x_axis_key={"updated_date"} stroke_color={"#A4C406"}/>
-                    </div>
-                </div>
+                }
+                
                 <div className="mt-3">
                     {
                         (!data.loading?<CountryTable countryData={data.response}/>:<CommonLoading />)

@@ -60,7 +60,7 @@ export const CountryTable = ({countryData}) => {
           <Table className={classes.table} size="small"  aria-label="a dense table">
               <TableHead>
               <TableRow>
-                <StyledTableCell width="700px" className="mb-0">{countryData[0].country}</StyledTableCell>
+                <StyledTableCell>{countryData[0].country}</StyledTableCell>
               </TableRow>
               <TableRow>
                   <StyledTableCell>Updated Date</StyledTableCell>
@@ -90,9 +90,9 @@ export const CountryTable = ({countryData}) => {
                   <StyledTableCell align="center">{(day.percentage.actives)}</StyledTableCell>
                   <StyledTableCell align="center">{(day.percentage.deaths)}</StyledTableCell>
                   <StyledTableCell align="center">{(day.percentage.recovered)}</StyledTableCell>
-                  <StyledTableCell backgroundColor="red" align="center">+{(day.new_confirmed_cases) && commaSeparator(day.new_confirmed_cases)}</StyledTableCell>
-                  <StyledTableCell align="center">+{(day.new_death_cases) && commaSeparator(day.new_death_cases)}</StyledTableCell>
-                  <StyledTableCell align="center">+{(day.new_recovered_cases) && commaSeparator(day.new_recovered_cases)}</StyledTableCell>
+                  <StyledTableCell align="center">{(day.new_confirmed_cases) && commaSeparator(day.new_confirmed_cases)}</StyledTableCell>
+                  <StyledTableCell align="center">{(day.new_death_cases) && commaSeparator(day.new_death_cases)}</StyledTableCell>
+                  <StyledTableCell align="center">{(day.new_recovered_cases) && commaSeparator(day.new_recovered_cases)}</StyledTableCell>
                   <StyledTableCell align="center">{(day.growth_factor)}</StyledTableCell>
                   </StyledTableRow>
               ))}
