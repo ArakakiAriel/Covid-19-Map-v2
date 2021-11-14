@@ -36,6 +36,7 @@ export const CountryScreen = () => {
             setData({error:true , loading: false, response:null});
         }else{
             console.log(response.response_data)
+            console.log("LLAMO AL FORMATTABLEDATA")
             let tableData = await formatTableData(response.response_data, growthResponse.response_data);
             await setData({...data, response: tableData, error:false});
             
@@ -136,7 +137,17 @@ export const CountryScreen = () => {
 }
 
 const formatTableData = async (arrayA, arrayB) => {
+    console.log("ENTRO AL FORMAT TABLE DATA")
     let formatedData = [];
+    for(let i=0; i < arrayB.length; i++){
+        if (arrayB[i].new_confirmed_cases < 0){
+            arrayB[i].new_confirmed_cases = 0;
+        }
+        if (arrayB[i].new_death_cases < 0){
+            arrayB[i].new_death_cases = 0;
+        }
+    }
+
     await arrayA.map((dataA, index) => 
         formatedData[index] = {
             ...dataA,
@@ -144,5 +155,6 @@ const formatTableData = async (arrayA, arrayB) => {
         }
     );
 
+    
     return formatedData;
 }
